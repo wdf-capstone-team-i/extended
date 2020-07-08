@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import MessageForm from "../MessageBox/MessageForm";
 import Navbar from "../Navbar/Navbar";
+
 function App() {
   return (
     <div className="App">
@@ -12,7 +13,7 @@ function App() {
 
         <h1>Hello World</h1>
 
-        <p>Message Box will go here</p>
+        <p>Messages will show here</p>
 
         <MessageForm />
       </header>
