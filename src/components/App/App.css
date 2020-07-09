@@ -23,10 +23,16 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  overflow-y: scroll;
+
 }
 
 .App-link {
   color: #61dafb;
+}
+
+.chat-msg{
+  background-color: #979000;
 }
 
 @keyframes App-logo-spin {
