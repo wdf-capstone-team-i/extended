@@ -34,8 +34,7 @@ class App extends React.Component{
 
   formHandler(e){
     e.preventDefault();
-    const {currentMessage, user} = this.state;
-    const {message} = currentMessage;
+    const {message, user} = this.state.currentMessage;
     this.socket.emit('msg:send', {message, user});
     this.setState({...this.state, currentMessage: {message: '', user}});
   }
