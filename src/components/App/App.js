@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import MessageForm from "../Message/MessageForm";
+import MessageForm from "../MessageBox/MessageForm";
 import Navbar from "../Navbar/Navbar";
 import io from "socket.io-client";
 
@@ -19,11 +19,19 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    const chatHistory = window.localStorage.getItem('chat-history');
+    if(!chatHistory){
+      window.localStorage.setItem('chat-history', this.state.chat);
+    }else{
+      this.setState({...this.state, chat: JSON.parse(chatHistory)});
+    }
+
     this.socket.on("msg:receive", ({ message, user }, idx) => {
       this.setState({
         ...this.state,
         chat: [...this.state.chat, { message, user }],
       });
+      window.localStorage.setItem('chat-history', JSON.stringify(this.state.chat))
     });
   }
 
