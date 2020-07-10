@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { TextField, IconButton } from "@material-ui/core";
+import "./MessageForm.css";
 import SendIcon from "@material-ui/icons/Send";
 import {
   createMuiTheme,
@@ -23,16 +24,33 @@ const theme = createMuiTheme({
   },
 });
 
-function MessageForm() {
+function MessageForm(props) {
   const classes = useStyles();
-
   return (
     <div>
-      <form className={classes.root} noValidate autoComplete="off">
+      <form
+        id="chat-form"
+        className={classes.root}
+        noValidate
+        autoComplete="off"
+        onSubmit={props.formHandler}
+      >
         <ThemeProvider theme={theme}>
-          <TextField id="standard-basic" label="Message" />
+          <TextField
+            label="Username"
+            id="user"
+            name="user"
+            onChange={props.onTextChange}
+          />
+          <TextField
+            id="standard-basic"
+            name="message"
+            label="Message"
+            value={props.message}
+            onChange={props.onTextChange}
+          />
 
-          <IconButton color="primary" aria-label="add an alarm">
+          <IconButton type="submit" color="primary" aria-label="add an alarm">
             <SendIcon />
           </IconButton>
         </ThemeProvider>
