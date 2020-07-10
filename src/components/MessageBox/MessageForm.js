@@ -1,6 +1,7 @@
-import React, {useState} from "react";
-import io from 'socket.io-client';
+import React, { useState } from "react";
+import io from "socket.io-client";
 import { TextField, IconButton } from "@material-ui/core";
+import "./MessageForm.css";
 import SendIcon from "@material-ui/icons/Send";
 import {
   createMuiTheme,
@@ -24,20 +25,35 @@ const theme = createMuiTheme({
   },
 });
 
-
-
 function MessageForm(props) {
   const classes = useStyles();
 
-  const messages = document.querySelector('#chat-messages');
-
+  const messages = document.querySelector("#chat-messages");
 
   return (
     <div>
-      <form id="chat-form" className={classes.root} noValidate autoComplete="off" onSubmit={props.formHandler}>
+      <form
+        id="chat-form"
+        className={classes.root}
+        noValidate
+        autoComplete="off"
+        onSubmit={props.formHandler}
+      >
         <ThemeProvider theme={theme}>
-          <TextField id="standard-basic" name="message" label="Message" value={props.message} onChange={props.onTextChange} />
-          <TextField name="user" onChange={props.onTextChange}/>
+          <TextField
+            label="Username"
+            id="user"
+            name="user"
+            onChange={props.onTextChange}
+          />
+          <TextField
+            id="standard-basic"
+            name="message"
+            label="Message"
+            value={props.message}
+            onChange={props.onTextChange}
+          />
+
           <IconButton type="submit" color="primary" aria-label="add an alarm">
             <SendIcon />
           </IconButton>
