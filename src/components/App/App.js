@@ -39,6 +39,7 @@ class App extends React.Component {
     e.preventDefault();
 
     const {message, user} = this.state.currentMessage;
+    if(!message || !user) return;
     this.socket.emit('msg:send', {message, user});
     this.setState({...this.state, currentMessage: {...this.state.currentMessage, message: ''}});
 
