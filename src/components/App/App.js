@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import "./App.css";
-import MessageForm from "../MessageBox/MessageForm";
+import MessageForm from "../Message/MessageForm";
 import Navbar from "../Navbar/Navbar";
-import Messages from "../Messages/Messages";
 import io from "socket.io-client";
 
 class App extends React.Component {
   constructor() {
     super();
-    this.socket = io.connect('https://extended-chat.herokuapp.com/');
+    this.socket = io.connect("https://extended-chat.herokuapp.com/");
 
     this.state = {
       chat: [],
@@ -19,38 +18,35 @@ class App extends React.Component {
     this.formHandler = this.formHandler.bind(this);
   }
 
-  //const socketRef = useRef();
-  //socketRef.current = io.connect('http://localhost:8080');
   componentDidMount() {
-      const msgHistory = window.localStorage.getItem('message-history');
-    if(!msgHistory) {
-        window.localStorage.setItem('message-history', JSON.stringify(this.state.chat));
-    }else{
-      this.setState({...this.state, chat: JSON.parse(msgHistory)});
-    }
-
     this.socket.on("msg:receive", ({ message, user }, idx) => {
       this.setState({
         ...this.state,
         chat: [...this.state.chat, { message, user }],
       });
-      window.localStorage.setItem('message-history', JSON.stringify(this.state.chat))
     });
   }
 
   onTextChange(e) {
-    //state: {name: new text} // {...state, {name: other text"}}
-    this.setState({...this.state, currentMessage: {...this.state.currentMessage, [e.target.name]: e.target.value} });
+    this.setState({
+      ...this.state,
+      currentMessage: {
+        ...this.state.currentMessage,
+        [e.target.name]: e.target.value,
+      },
+    });
   }
 
   formHandler(e) {
     e.preventDefault();
 
-    const {message, user} = this.state.currentMessage;
-    if(!message || !user) return;
-    this.socket.emit('msg:send', {message, user});
-    this.setState({...this.state, currentMessage: {...this.state.currentMessage, message: ''}});
-
+    const { message, user } = this.state.currentMessage;
+    if (!message || !user) return;
+    this.socket.emit("msg:send", { message, user });
+    this.setState({
+      ...this.state,
+      currentMessage: { ...this.state.currentMessage, message: "" },
+    });
   }
 
   render() {

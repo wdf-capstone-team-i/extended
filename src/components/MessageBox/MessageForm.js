@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import io from "socket.io-client";
 import { TextField, IconButton } from "@material-ui/core";
 import "./MessageForm.css";
 import SendIcon from "@material-ui/icons/Send";
@@ -27,9 +26,6 @@ const theme = createMuiTheme({
 
 function MessageForm(props) {
   const classes = useStyles();
-
-  const messages = document.querySelector("#chat-messages");
-
   return (
     <div>
       <form
