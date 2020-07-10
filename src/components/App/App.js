@@ -22,11 +22,19 @@ class App extends React.Component {
   //const socketRef = useRef();
   //socketRef.current = io.connect('http://localhost:8080');
   componentDidMount() {
+      const msgHistory = window.localStorage.getItem('message-history');
+    if(!msgHistory) {
+        window.localStorage.setItem('message-history', JSON.stringify(this.state.chat));
+    }else{
+      this.setState({...this.state, chat: JSON.parse(msgHistory)});
+    }
+
     this.socket.on("msg:receive", ({ message, user }, idx) => {
       this.setState({
         ...this.state,
         chat: [...this.state.chat, { message, user }],
       });
+      window.localStorage.setItem('message-history', JSON.stringify(this.state.chat))
     });
   }
 
