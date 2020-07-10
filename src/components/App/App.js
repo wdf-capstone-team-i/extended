@@ -32,27 +32,16 @@ class App extends React.Component {
 
   onTextChange(e) {
     //state: {name: new text} // {...state, {name: other text"}}
-<<<<<<< HEAD
     this.setState({...this.state, currentMessage: {...this.state.currentMessage, [e.target.name]: e.target.value} });
-=======
-    this.setState({
-      ...this.state,
-      currentMessage: { [e.target.name]: e.target.value },
-    });
->>>>>>> 3544434fe816d688024473e8b136892c6e5e8106
   }
 
   formHandler(e) {
     e.preventDefault();
-<<<<<<< HEAD
+
     const {message, user} = this.state.currentMessage;
     this.socket.emit('msg:send', {message, user});
     this.setState({...this.state, currentMessage: {...this.state.currentMessage, message: ''}});
-=======
-    const { message, user } = this.state.currentMessage;
-    this.socket.emit("msg:send", { message, user });
-    this.setState({ ...this.state, currentMessage: { message: "", user } });
->>>>>>> 3544434fe816d688024473e8b136892c6e5e8106
+
   }
 
   render() {
