@@ -8,7 +8,7 @@ import io from 'socket.io-client';
 class App extends React.Component{
   constructor() {
     super();
-    this.socket = io.connect('http://localhost:8080');
+    this.socket = io.connect('https://extended-chat.herokuapp.com/');
     this.state = {
       chat: [],
       currentMessage: {message:'', user: ''}
@@ -29,14 +29,14 @@ class App extends React.Component{
 
   onTextChange(e){
     //state: {name: new text} // {...state, {name: other text"}}
-    this.setState({...this.state, currentMessage: { [e.target.name]: e.target.value} });
+    this.setState({...this.state, currentMessage: {...this.state.currentMessage, [e.target.name]: e.target.value} });
   }
 
   formHandler(e){
     e.preventDefault();
     const {message, user} = this.state.currentMessage;
     this.socket.emit('msg:send', {message, user});
-    this.setState({...this.state, currentMessage: {message: '', user}});
+    this.setState({...this.state, currentMessage: {...this.state.currentMessage, message: ''}});
   }
 
   render() {
