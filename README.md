@@ -1,3 +1,11 @@
+# Extended - Client
+
+## Motivation
+
+For our capstone project we wanted to create a way for users on the same page to interact on the same page.
+
+This is the client side. You can start this applcation and test it out on the browser by installing it as an extension! Able to chat with people live on the websites.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
@@ -66,3 +74,14 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+Screenshots
+
+## Tech/Framework used
+
+- React
+- Manifest.json
+- Sockets
+- Material-Ui
+
+## Credit
