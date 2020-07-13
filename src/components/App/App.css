@@ -30,24 +30,6 @@
   color: #61dafb;
 }
 
-#chat-form {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: baseline;
-  position: fixed;
-  bottom: 0;
-  left: 10px;
-}
-
-input[type="text"] {
-  color: #ffffff;
-}
-
-#chat-form label {
-  color: #ffffff;
-}
-
 #standard-basic {
   width: 270px;
 }

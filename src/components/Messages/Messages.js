@@ -47,24 +47,22 @@ class Messages extends React.Component {
 
   render() {
     return (
-      <header className="App-header">
-        <div id="chat">
-          <div id="chat-messages">
-            {this.state.chat.map((data, idx) => (
-              <div key={idx} className="chat-msg">
-                <p>
-                  {data.user}: {data.message}
-                </p>
-              </div>
-            ))}
-          </div>
-          <MessageForm
-            formHandler={this.formHandler}
-            onTextChange={this.onTextChange}
-            message={this.state.currentMessage.message}
-          />
+      <div id="chat">
+        <div id="chat-messages">
+          {this.state.chat.map((data, idx) => (
+            <div key={idx} className="chat-msg">
+              <p>
+                {data.user}: {data.message}
+              </p>
+            </div>
+          ))}
         </div>
-      </header>
+        <MessageForm
+          formHandler={this.formHandler}
+          onTextChange={this.onTextChange}
+          message={this.state.currentMessage.message}
+        />
+      </div>
     );
   }
 }
