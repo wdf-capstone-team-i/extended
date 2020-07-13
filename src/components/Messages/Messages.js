@@ -46,6 +46,7 @@ class Messages extends React.Component {
   }
 
   render() {
+    console.log("This is the messages");
     return (
       <div id="chat">
         <div id="chat-messages">
