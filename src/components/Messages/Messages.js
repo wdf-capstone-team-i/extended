@@ -5,10 +5,11 @@ import io from "socket.io-client";
 class Messages extends React.Component {
   constructor() {
     super();
-    this.socket = io.connect("https://extended-chat.herokuapp.com/");
+    this.socket = io.connect("http://localhost:8080/");
     this.state = {
       chat: [],
       currentMessage: { message: "", user: "" },
+      page: "message",
     };
     this.onTextChange = this.onTextChange.bind(this);
     this.formHandler = this.formHandler.bind(this);
