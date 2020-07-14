@@ -4,6 +4,9 @@
   "name": "Extended",
   "description": "chat extension that allows users to communicate on the same domain",
   "version": "0.0.1",
+  "background": {
+    "page": "background-page.html"
+  },
   "browser_action": {
     "default_popup": "index.html",
     "default_title": "Extended"
