@@ -3,11 +3,38 @@ import "./App.css";
 import MessageForm from "../MessageBox/MessageForm";
 import Navbar from "../Navbar/Navbar";
 import io from "socket.io-client";
+import axios from "axios"
+
+function getUrl(tab) {
+  const url = tab.url
+  const domain = new URL(url).hostname
+  const name = domain.split('.')
+  if (name.length < 2) name.push('')
+  this.setState({
+    domain, 
+    url, 
+    pageTitle: tab.title,
+    name: name[name.length - 2]
+  })
+  this.setState({room: domain})
+  this.socket.emit("new-user", domain)
+  axios.get(`http://localhost:8080/api/comments/domain/${domain}`)
+  .then(({data}) => {
+    console.log('data rceived from post:', data)
+    this.setState({chat: data})
+  })
+  // const chatHistory = window.localStorage.getItem('chat-history' + domain);
+  // if(!chatHistory){
+  //   window.localStorage.setItem('chat-history' + domain, JSON.stringify(this.state.chat));
+  // }else{
+  //   this.setState({...this.state, chat: JSON.parse(chatHistory)});
+  // }
+}
 
 class App extends React.Component {
   constructor() {
     super();
-    this.socket = io.connect("https://extended-chat.herokuapp.com/");
+    this.socket = io.connect("http://localhost:8080/");
 
     this.state = {
       chat: [],
@@ -16,26 +43,45 @@ class App extends React.Component {
 
     this.onTextChange = this.onTextChange.bind(this);
     this.formHandler = this.formHandler.bind(this);
+    this.getUrl = getUrl.bind(this)
   }
 
   componentDidMount() {
-    const chatHistory = window.localStorage.getItem('chat-history');
-    if(!chatHistory){
-      window.localStorage.setItem('chat-history', this.state.chat);
-    }else{
-      this.setState({...this.state, chat: JSON.parse(chatHistory)});
+    if (window.chrome && window.chrome.tabs) window.chrome.tabs.getSelected(null, this.getUrl)
+    else {
+      const url = window.location.href
+      const domain = new URL(url).hostname
+      const name = domain.split('.')
+      if (name.length < 2) name.push('')
+      this.setState({
+        domain, 
+        url, 
+        pageTitle: document.title,
+        name: name[name.length - 2]
+      })
+      this.setState({room: domain})
+      this.socket.emit("new-user", domain)
+      axios.get(`http://localhost:8080/api/comments/domain/${domain}`)
+      .then(({data}) => {
+        console.log('testing')
+        console.log('data rceived from post:', data)
+        if (typeof data === 'object') this.setState({chat: data})
+      })
     }
 
     this.socket.on("msg:receive", ({ message, user }, idx) => {
+      console.log(`receiving message: message: ${message} user: ${user}`)
       this.setState({
         ...this.state,
-        chat: [...this.state.chat, { message, user }],
+        chat: [...this.state.chat, { text: message, user: {username: user} }],
       });
-      window.localStorage.setItem('chat-history', JSON.stringify(this.state.chat))
+      
+      // window.localStorage.setItem('chat-history' + this.state.room, JSON.stringify(this.state.chat))
     });
   }
 
   onTextChange(e) {
+    console.log('onTextChange')
     this.setState({
       ...this.state,
       currentMessage: {
@@ -47,10 +93,23 @@ class App extends React.Component {
 
   formHandler(e) {
     e.preventDefault();
-
+    const socket = this.socket
     const { message, user } = this.state.currentMessage;
     if (!message || !user) return;
-    this.socket.emit("msg:send", { message, user });
+    axios.post(`http://localhost:8080/api/comments/`, {
+      domain: this.state.domain, 
+      url: this.state.url,
+      name: this.state.name,
+      text: message,
+      pageTitle: this.state.pageTitle
+    })
+    .then(({data}) => {
+      if (data) {
+        socket.emit("msg:send", this.state.room, {message: data.text, user})
+        console.log(`comment: ${data.text} user: ${user}`)
+      }
+    })
+    // this.socket.emit("msg:send", this.state.room, { message, user });
     this.setState({
       ...this.state,
       currentMessage: { ...this.state.currentMessage, message: "" },
@@ -58,6 +117,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log('STATE:', this.state)
     return (
       <div className="App">
         <Navbar />
@@ -67,7 +127,7 @@ class App extends React.Component {
               {this.state.chat.map((data, idx) => (
                 <div key={idx} className="chat-msg">
                   <p>
-                    {data.user}: {data.message}
+                    {data.user.username}: {data.text}
                   </p>
                 </div>
               ))}
