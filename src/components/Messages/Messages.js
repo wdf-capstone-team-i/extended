@@ -6,6 +6,8 @@ import axios from "axios"
 // const serverUrl = process.env.NODE_ENV === "development" ? "http://localhost:8080" : "https://extended-chat.herokuapp.com"
 const serverUrl = "http://localhost:8080"
 
+console.log('management.getall:', window.chrome.management.getAll())
+
 function getUrl(tab) {
   const url = tab.url
   const domain = new URL(url).hostname
