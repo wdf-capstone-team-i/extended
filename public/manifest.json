@@ -8,6 +8,7 @@
     "page": "background-page.html"
   },
   "permissions": [
+    "activeTabs",
     "tabs"
   ],
   "browser_action": {
