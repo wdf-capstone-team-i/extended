@@ -17,8 +17,8 @@ function getUrl(tab) {
     pageTitle: tab.title,
     name: name[name.length - 2]
   })
-  this.setState({room: domain})
-  this.socket.emit("new-user", domain)
+  this.setState({room: name})
+  this.socket.emit("new-user", name)
   axios.get(`${serverUrl}/api/comments/domain/${name}`)
   .then(({data}) => {
     console.log('data rceived from get:', data)
@@ -61,7 +61,7 @@ class Messages extends React.Component {
         name: name[name.length - 2]
       })
       this.setState({room: domain})
-      this.socket.emit("new-user", domain)
+      this.socket.emit("new-user", name)
       axios.get(`${serverUrl}/api/comments/domain/${name}`)
       .then(({data}) => {
         console.log('data rceived from get:', data)
