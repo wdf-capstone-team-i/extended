@@ -9,13 +9,14 @@ const serverUrl = "http://localhost:8080"
 function getUrl(tab) {
   const url = tab.url
   const domain = new URL(url).hostname
-  const name = domain.split('.')
+  let name = domain.split('.')
+  name = name[name.length - 2]
   if (name.length < 2) name.push('')
   this.setState({
     domain, 
     url, 
     pageTitle: tab.title,
-    name: name[name.length - 2]
+    name
   })
   this.setState({room: name})
   this.socket.emit("new-user", name)
@@ -52,13 +53,14 @@ class Messages extends React.Component {
     else {
       const url = window.location.href
       const domain = new URL(url).hostname
-      const name = domain.split('.')
+      let name = domain.split('.')
       if (name.length < 2) name.push('')
+      name = name[name.length - 2]
       this.setState({
         domain, 
         url, 
         pageTitle: document.title,
-        name: name[name.length - 2]
+        name
       })
       this.setState({room: domain})
       this.socket.emit("new-user", name)
