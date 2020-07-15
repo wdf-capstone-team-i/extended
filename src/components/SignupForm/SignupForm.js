@@ -1,69 +1,30 @@
 import React, { Component } from "react";
 import { TextField, Button } from "@material-ui/core";
-import { Redirect } from "react-router-dom";
-import axios from "axios";
 
 class SignupForm extends Component {
-  constructor() {
-    super();
-    this.state = {
-      page: "signup",
-    };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.redirect = this.redirect.bind(this);
-  }
-
-  redirect() {
-    console.log("Redirected ");
-    return <Redirect to="/messages" />;
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-    let firstname = event.target.firstname.value;
-    let lastname = event.target.lastname.value;
-    let email = event.target.email.value;
-    let username = event.target.username.value;
-    let password = event.target.password.value;
-
-    axios
-      .post("http://localhost:8080/api/users", {
-        firstname,
-        lastname,
-        email,
-        username,
-        password,
-      })
-      .then((res) => res.data)
-      .then((body) => console.log(body));
-  }
-
-  componentDidMount() {
-    console.log("This is mounted");
-  }
   render() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.props.handleSignup}>
           <TextField
             id="firstname"
             label="First Name"
-            type="text"
             variant="outlined"
             margin="normal"
             fullWidth
             name="firstname"
+            value={this.props.user.firstname}
+            onChange={this.props.onChange}
           />
           <br />
 
           <TextField
             id="lastname"
             label="Last Name"
-            type="text"
             variant="outlined"
             margin="normal"
             name="lastname"
+            value={this.props.user.lastname}
             fullWidth
           />
           <br />
@@ -71,10 +32,10 @@ class SignupForm extends Component {
           <TextField
             id="email"
             label="Email Address"
-            type="text"
             variant="outlined"
             margin="normal"
             name="email"
+            value={this.props.user.email}
             fullWidth
           />
           <br />
@@ -82,10 +43,10 @@ class SignupForm extends Component {
             id="username"
             fullWidth
             label="Username"
-            type="text"
             variant="outlined"
             margin="normal"
             name="username"
+            value={this.props.user.username}
           />
           <br />
           <TextField
@@ -96,10 +57,12 @@ class SignupForm extends Component {
             variant="outlined"
             margin="normal"
             name="password"
+            value={this.props.user.password}
           />
           <br />
+
           <Button
-            onClick={this.redirect}
+            // onClick={this.redirect}
             variant="contained"
             color="primary"
             fullWidth

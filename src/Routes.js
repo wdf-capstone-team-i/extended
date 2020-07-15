@@ -1,39 +1,64 @@
 import React, { Component } from "react";
-// import { Route, Switch } from "react-router-dom";
 import { Messages, Signup } from "./components";
-import { createMemoryHistory } from "history";
-const history = createMemoryHistory();
+import axios from "axios";
 
 class Routes extends Component {
   constructor() {
     super();
     this.state = {
-      page: "signup",
+      user: {
+        firstname: "",
+        lastname: "",
+        email: "",
+        username: "",
+        password: "",
+      },
     };
+
+    this.handleSignup = this.handleSignup.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleSignup(event) {
+    event.preventDefault();
+
+    this.setState({ user: { [event.target.name]: "" } });
+    event.preventDefault();
+    let firstname = event.target.firstname.value;
+    let lastname = event.target.lastname.value;
+    let email = event.target.email.value;
+    let username = event.target.username.value;
+    let password = event.target.password.value;
+
+    axios
+      .post("http://localhost:8080/api/users", {
+        firstname,
+        lastname,
+        email,
+        username,
+        password,
+      })
+      .then((res) => res.data)
+      .then((body) => console.log(body));
+  }
+
+  handleChange(event) {
+    this.setState({
+      user: { [event.target.name]: event.target.value },
+    });
+    console.log(this.state.user.firstname);
   }
 
   render() {
-    //   return (
-    //     <Switch>
-    //       <Route path="/messages" component={Messages} />
-    //       <Route path="/" component={Signup} />
-    //     </Switch>
-    //   );
-
-    let currentpage = null;
-    switch (this.state.page) {
-      case "signup":
-        currentpage = <Signup />;
-        break;
-      case "message":
-        currentpage = <Messages />;
-        break;
-      default:
-        return currentpage;
-    }
-
-    return currentpage;
+    return this.state.user.id ? (
+      <Messages />
+    ) : (
+      <Signup
+        handleSignup={this.handleSignup}
+        {...this.state}
+        onChange={this.handleChange}
+      />
+    );
   }
 }
-
 export default Routes;
