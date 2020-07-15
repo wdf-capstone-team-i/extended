@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 // import { Route, Switch } from "react-router-dom";
 import { Messages, Signup } from "./components";
-import { createMemoryHistory } from "history";
-const history = createMemoryHistory();
 
 class Routes extends Component {
   constructor() {
     super();
     this.state = {
-      page: "signup",
+      page: "message",
     };
   }
 
