@@ -19,7 +19,7 @@ function getUrl(tab) {
   })
   this.setState({room: domain})
   this.socket.emit("new-user", domain)
-  axios.get(`${serverUrl}/api/comments/domain/${domain}`)
+  axios.get(`${serverUrl}/api/comments/domain/${name}`)
   .then(({data}) => {
     console.log('data rceived from get:', data)
     this.setState({chat: data})
@@ -62,7 +62,7 @@ class Messages extends React.Component {
       })
       this.setState({room: domain})
       this.socket.emit("new-user", domain)
-      axios.get(`${serverUrl}/api/comments/domain/${domain}`)
+      axios.get(`${serverUrl}/api/comments/domain/${name}`)
       .then(({data}) => {
         console.log('data rceived from get:', data)
         if (typeof data === 'object') this.setState({chat: data})
