@@ -3,6 +3,9 @@ import { MessageForm } from "../index";
 import io from "socket.io-client";
 import axios from "axios"
 
+// const serverUrl = process.env.NODE_ENV === "development" ? "http://localhost:8080" : "https://extended-chat.herokuapp.com"
+const serverUrl = "http://localhost:8080"
+
 function getUrl(tab) {
   const url = tab.url
   const domain = new URL(url).hostname
@@ -16,9 +19,9 @@ function getUrl(tab) {
   })
   this.setState({room: domain})
   this.socket.emit("new-user", domain)
-  axios.get(`http://localhost:8080/api/comments/domain/${domain}`)
+  axios.get(`${serverUrl}/api/comments/domain/${domain}`)
   .then(({data}) => {
-    console.log('data rceived from post:', data)
+    console.log('data rceived from get:', data)
     this.setState({chat: data})
   })
   // const chatHistory = window.localStorage.getItem('chat-history' + domain);
@@ -32,7 +35,7 @@ function getUrl(tab) {
 class Messages extends React.Component {
   constructor() {
     super();
-    this.socket = io.connect("http://localhost:8080/");
+    this.socket = io.connect(serverUrl);
 
     this.state = {
       chat: [],
@@ -59,10 +62,9 @@ class Messages extends React.Component {
       })
       this.setState({room: domain})
       this.socket.emit("new-user", domain)
-      axios.get(`http://localhost:8080/api/comments/domain/${domain}`)
+      axios.get(`${serverUrl}/api/comments/domain/${domain}`)
       .then(({data}) => {
-        console.log('testing')
-        console.log('data rceived from post:', data)
+        console.log('data rceived from get:', data)
         if (typeof data === 'object') this.setState({chat: data})
       })
     }
@@ -94,7 +96,7 @@ class Messages extends React.Component {
     const socket = this.socket
     const { message, user } = this.state.currentMessage;
     if (!message || !user) return;
-    axios.post(`http://localhost:8080/api/comments/`, {
+    axios.post(`${serverUrl}/api/comments/`, {
       domain: this.state.domain, 
       url: this.state.url,
       name: this.state.name,
