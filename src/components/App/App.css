@@ -13,7 +13,7 @@
   }
 }
 
-.App-header {
+.App-main {
   background-color: #282c34;
   height: 489px;
   width: 489px;
@@ -24,9 +24,12 @@
   font-size: calc(10px + 2vmin);
   color: white;
   overflow-y: scroll;
-
 }
 
 .App-link {
   color: #61dafb;
+}
+
+#standard-basic {
+  width: 270px;
 }
