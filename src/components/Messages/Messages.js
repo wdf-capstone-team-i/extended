@@ -10,8 +10,8 @@ function getUrl(tab) {
   const url = tab.url
   const domain = new URL(url).hostname
   let name = domain.split('.')
-  name = name[name.length - 2]
   if (name.length < 2) name.push('')
+  name = name[name.length - 2]
   this.setState({
     domain, 
     url, 
