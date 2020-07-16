@@ -115,19 +115,19 @@ class Messages extends React.Component {
     this.setState({
       ...this.state,
       currentMessage: { ...this.state.currentMessage, message: "" },
-      chat: [...this.state.chat, { message }],
+      // chat: [...this.state.chat, { message }],
     });
   }
 
   render() {
-    console.log(this.state);
+    console.log("STATE:", this.state);
     console.log("This is the messages", this.state.currentMessage);
     return (
       <div id="chat">
         <div id="chat-messages">
           {this.state.chat.map((data, idx) => (
             <div key={idx} className="chat-msg">
-              <p>{data.message}</p>
+              <p>{data.text}</p>
             </div>
           ))}
           <MessageForm
