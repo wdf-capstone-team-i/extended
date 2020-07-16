@@ -7,7 +7,8 @@ import axios from "axios";
 const serverUrl = "http://localhost:8080"
 
 function getUrl(tab) {
-  const url = tab.url
+
+  const url = tab.url;
   const domain = new URL(url).hostname
   let name = domain.split('.')
   if (name.length < 2) name.push('')
@@ -26,8 +27,6 @@ function getUrl(tab) {
   .then(({data}) => {
     console.log('data rceived from get:', data)
     this.setState({chat: data})
-  })
-
   });
 
 
@@ -77,9 +76,7 @@ class Messages extends React.Component {
       .then(({data}) => {
         console.log('data rceived from get:', data)
         if (typeof data === 'object') this.setState({chat: data})
-      })
-
-        });
+      });
 
     }
 
@@ -112,7 +109,7 @@ class Messages extends React.Component {
     const { message, user } = this.state.currentMessage;
     if (!message) return;
     axios.post(`${serverUrl}/api/comments/`, {
-      domain: this.state.domain, 
+      domain: this.state.domain,
       url: this.state.url,
       name: this.state.name,
       text: message,
@@ -123,9 +120,7 @@ class Messages extends React.Component {
        socket.emit("msg:send", this.state.room, { message: data.text });
           console.log(`comment: ${data.text} `);
       }
-    })
-
-      });
+    });
 
     // this.socket.emit("msg:send", this.state.room, { message, user });
     this.setState({
