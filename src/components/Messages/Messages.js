@@ -3,25 +3,34 @@ import { MessageForm } from "../index";
 import io from "socket.io-client";
 import axios from "axios";
 
+// const serverUrl = process.env.NODE_ENV === "development" ? "http://localhost:8080" : "https://extended-chat.herokuapp.com"
+const serverUrl = "http://localhost:8080"
+
 function getUrl(tab) {
-  const url = tab.url;
-  const domain = new URL(url).hostname;
-  const name = domain.split(".");
-  if (name.length < 2) name.push("");
+  const url = tab.url
+  const domain = new URL(url).hostname
+  let name = domain.split('.')
+  if (name.length < 2) name.push('')
+  name = name[name.length - 2]
+
   this.setState({
     domain,
     url,
     pageTitle: tab.title,
-    name: name[name.length - 2],
+
+    name
+  })
+  this.setState({room: domain})
+  this.socket.emit("new-user", domain)
+  axios.get(`${serverUrl}/api/comments/domain/${domain}`)
+  .then(({data}) => {
+    console.log('data rceived from get:', data)
+    this.setState({chat: data})
+  })
+
   });
-  this.setState({ room: domain });
-  this.socket.emit("new-user", domain);
-  axios
-    .get(`http://localhost:8080/api/comments/domain/${domain}`)
-    .then(({ data }) => {
-      console.log("data rceived from post:", data);
-      this.setState({ chat: data });
-    });
+
+
   // const chatHistory = window.localStorage.getItem('chat-history' + domain);
   // if(!chatHistory){
   //   window.localStorage.setItem('chat-history' + domain, JSON.stringify(this.state.chat));
@@ -33,7 +42,7 @@ function getUrl(tab) {
 class Messages extends React.Component {
   constructor() {
     super();
-    this.socket = io.connect("http://localhost:8080/");
+    this.socket = io.connect(serverUrl);
 
     this.state = {
       chat: [],
@@ -49,25 +58,29 @@ class Messages extends React.Component {
     if (window.chrome && window.chrome.tabs)
       window.chrome.tabs.getSelected(null, this.getUrl);
     else {
-      const url = window.location.href;
-      const domain = new URL(url).hostname;
-      const name = domain.split(".");
-      if (name.length < 2) name.push("");
+      const url = window.location.href
+      const domain = new URL(url).hostname
+      let name = domain.split('.')
+      if (name.length < 2) name.push('')
+      name = name[name.length - 2]
+
       this.setState({
         domain,
         url,
         pageTitle: document.title,
-        name: name[name.length - 2],
-      });
-      this.setState({ room: domain });
-      this.socket.emit("new-user", domain);
-      axios
-        .get(`http://localhost:8080/api/comments/domain/${domain}`)
-        .then(({ data }) => {
-          console.log("testing");
-          console.log("data rceived from post:", data);
-          if (typeof data === "object") this.setState({ chat: data });
+
+        name
+      })
+      this.setState({room: domain})
+      this.socket.emit("new-user", domain)
+      axios.get(`${serverUrl}/api/comments/domain/${domain}`)
+      .then(({data}) => {
+        console.log('data rceived from get:', data)
+        if (typeof data === 'object') this.setState({chat: data})
+      })
+
         });
+
     }
 
     this.socket.on("msg:receive", ({ message, user }, idx) => {
@@ -94,23 +107,26 @@ class Messages extends React.Component {
 
   formHandler(e) {
     e.preventDefault();
-    const socket = this.socket;
-    const { message } = this.state.currentMessage;
+
+    const socket = this.socket
+    const { message, user } = this.state.currentMessage;
     if (!message) return;
-    axios
-      .post(`http://localhost:8080/api/comments/`, {
-        domain: this.state.domain,
-        url: this.state.url,
-        name: this.state.name,
-        text: message,
-        pageTitle: this.state.pageTitle,
-      })
-      .then(({ data }) => {
-        if (data) {
-          socket.emit("msg:send", this.state.room, { message: data.text });
+    axios.post(`${serverUrl}/api/comments/`, {
+      domain: this.state.domain, 
+      url: this.state.url,
+      name: this.state.name,
+      text: message,
+      pageTitle: this.state.pageTitle
+    })
+    .then(({data}) => {
+      if (data) {
+       socket.emit("msg:send", this.state.room, { message: data.text });
           console.log(`comment: ${data.text} `);
-        }
+      }
+    })
+
       });
+
     // this.socket.emit("msg:send", this.state.room, { message, user });
     this.setState({
       ...this.state,

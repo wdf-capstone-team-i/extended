@@ -9,7 +9,7 @@ class Routes extends Component {
   constructor() {
     super();
     this.state = {
-      user: {
+user: {
         id: null,
         firstname: "",
         lastname: "",
