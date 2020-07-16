@@ -7,6 +7,7 @@ class Routes extends Component {
     super();
     this.state = {
       user: {
+        id: null,
         firstname: "",
         lastname: "",
         email: "",
@@ -22,8 +23,7 @@ class Routes extends Component {
   handleSignup(event) {
     event.preventDefault();
 
-    this.setState({ user: { [event.target.name]: "" } });
-    event.preventDefault();
+    this.setState({ ...this.state, user: { [event.target.name]: "" } });
     let firstname = event.target.firstname.value;
     let lastname = event.target.lastname.value;
     let email = event.target.email.value;
@@ -38,25 +38,25 @@ class Routes extends Component {
         username,
         password,
       })
-      .then((res) => res.data)
+      .then((res) => this.setState({ user: { id: res.data.id } }))
       .then((body) => console.log(body));
   }
 
   handleChange(event) {
     this.setState({
-      user: { [event.target.name]: event.target.value },
+      user: { ...this.state.user, [event.target.name]: event.target.value },
     });
-    console.log(this.state.user.firstname);
   }
 
   render() {
+    let username = this.state.user.user;
     return this.state.user.id ? (
-      <Messages />
+      <Messages username={username} />
     ) : (
       <Signup
-        handleSignup={this.handleSignup}
         {...this.state}
-        onChange={this.handleChange}
+        handleSignup={this.handleSignup}
+        handleChange={this.handleChange}
       />
     );
   }

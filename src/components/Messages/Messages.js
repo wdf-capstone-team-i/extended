@@ -36,10 +36,10 @@ class Messages extends React.Component {
 
   formHandler(e) {
     e.preventDefault();
-
+    console.log("Message form username", this.props.username);
     const { message, user } = this.state.currentMessage;
     if (!message || !user) return;
-    this.socket.emit("msg:send", { message, user });
+    this.socket.emit("msg:send", { message, user: this.props.username });
     this.setState({
       ...this.state,
       currentMessage: { ...this.state.currentMessage, message: "" },
@@ -47,7 +47,8 @@ class Messages extends React.Component {
   }
 
   render() {
-    console.log("This is the messages");
+    console.log(this.props);
+    console.log("This is the messages", this.state.currentMessage);
     return (
       <div id="chat">
         <div id="chat-messages">

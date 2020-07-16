@@ -9,44 +9,54 @@ class SignupForm extends Component {
           <TextField
             id="firstname"
             label="First Name"
+            type="text"
             variant="outlined"
             margin="normal"
             fullWidth
             name="firstname"
-            value={this.props.user.firstname}
-            onChange={this.props.onChange}
+            value={this.props.user.firstname || ""}
+            onChange={this.props.handleChange}
+            // required
           />
           <br />
 
           <TextField
             id="lastname"
             label="Last Name"
+            type="text"
             variant="outlined"
             margin="normal"
             name="lastname"
-            value={this.props.user.lastname}
-            fullWidth
+            value={this.props.user.lastname || ""}
+            onChange={this.props.handleChange}
+            // required
           />
           <br />
 
           <TextField
             id="email"
             label="Email Address"
+            type="text"
             variant="outlined"
             margin="normal"
             name="email"
-            value={this.props.user.email}
+            value={this.props.user.email || ""}
+            onChange={this.props.handleChange}
             fullWidth
+            // required
           />
           <br />
           <TextField
             id="username"
             fullWidth
             label="Username"
+            type="text"
             variant="outlined"
             margin="normal"
             name="username"
-            value={this.props.user.username}
+            value={this.props.user.username || ""}
+            onChange={this.props.handleChange}
+            // required
           />
           <br />
           <TextField
@@ -57,17 +67,13 @@ class SignupForm extends Component {
             variant="outlined"
             margin="normal"
             name="password"
-            value={this.props.user.password}
+            value={this.props.user.password || ""}
+            onChange={this.props.handleChange}
+            // required
           />
           <br />
 
-          <Button
-            // onClick={this.redirect}
-            variant="contained"
-            color="primary"
-            fullWidth
-            type="submit"
-          >
+          <Button variant="contained" color="primary" fullWidth type="submit">
             Signup
           </Button>
         </form>
