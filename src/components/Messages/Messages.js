@@ -8,18 +8,17 @@ class Messages extends React.Component {
     this.socket = io.connect("http://localhost:8080/");
     this.state = {
       chat: [],
-      currentMessage: { message: "", user: "" },
-      page: "message",
+      currentMessage: { message: "" },
     };
     this.onTextChange = this.onTextChange.bind(this);
     this.formHandler = this.formHandler.bind(this);
   }
 
   componentDidMount() {
-    this.socket.on("msg:receive", ({ message, user }, idx) => {
+    this.socket.on("msg:receive", ({ message }) => {
       this.setState({
         ...this.state,
-        chat: [...this.state.chat, { message, user }],
+        chat: [...this.state.chat, { message }],
       });
     });
   }
@@ -36,27 +35,25 @@ class Messages extends React.Component {
 
   formHandler(e) {
     e.preventDefault();
-    console.log("Message form username", this.props.username);
-    const { message, user } = this.state.currentMessage;
-    if (!message || !user) return;
-    this.socket.emit("msg:send", { message, user: this.props.username });
+    const { message } = this.state.currentMessage;
+    if (!message) return;
+    this.socket.emit("msg:send", { message });
     this.setState({
       ...this.state,
       currentMessage: { ...this.state.currentMessage, message: "" },
+      chat: [...this.state.chat, { message }],
     });
   }
 
   render() {
-    console.log(this.props);
+    console.log(this.state);
     console.log("This is the messages", this.state.currentMessage);
     return (
       <div id="chat">
         <div id="chat-messages">
           {this.state.chat.map((data, idx) => (
             <div key={idx} className="chat-msg">
-              <p>
-                {data.user}: {data.message}
-              </p>
+              <p>{data.message}</p>
             </div>
           ))}
         </div>
