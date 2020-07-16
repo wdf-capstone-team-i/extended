@@ -22,7 +22,6 @@ function getUrl(tab) {
   this.socket.emit("new-user", domain)
   axios.get(`${serverUrl}/api/comments/domain/${domain}`)
   .then(({data}) => {
-    console.log('hello')
     console.log('data rceived from get:', data)
     this.setState({chat: data})
   })
