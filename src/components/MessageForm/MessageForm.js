@@ -37,12 +37,6 @@ function MessageForm(props) {
       >
         <ThemeProvider theme={theme}>
           <TextField
-            label="Username"
-            id="user"
-            name="user"
-            onChange={props.onTextChange}
-          />
-          <TextField
             id="standard-basic"
             name="message"
             label="Message"
