@@ -27,8 +27,6 @@ function getUrl(tab) {
   .then(({data}) => {
     console.log('data rceived from get:', data)
     this.setState({chat: data})
-  })
-
   });
 
 
