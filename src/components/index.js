@@ -4,3 +4,5 @@ export { default as MessageForm } from "./MessageForm/MessageForm";
 export { default as Messages } from "./Messages/Messages";
 export { default as Navbar } from "./Navbar/Navbar";
 export { default as Signup } from "./SignupForm/SignupForm";
+export { default as LoginForm } from "./LoginForm/LoginForm";
+export { default as LoginSwitch } from "./LoginSwitch/LoginSwtich";

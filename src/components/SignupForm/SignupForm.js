@@ -1,6 +1,15 @@
 import React, { Component } from "react";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { TextField, Button } from "@material-ui/core";
+import yellow from "@material-ui/core/colors/yellow";
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: yellow[500],
+    },
+  },
+});
 class SignupForm extends Component {
   render() {
     return (
@@ -16,7 +25,7 @@ class SignupForm extends Component {
             name="firstname"
             value={this.props.user.firstname || ""}
             onChange={this.props.handleChange}
-            // required
+            required
           />
           <br />
 
@@ -29,7 +38,7 @@ class SignupForm extends Component {
             name="lastname"
             value={this.props.user.lastname || ""}
             onChange={this.props.handleChange}
-            // required
+            required
           />
           <br />
 
@@ -43,7 +52,7 @@ class SignupForm extends Component {
             value={this.props.user.email || ""}
             onChange={this.props.handleChange}
             fullWidth
-            // required
+            required
           />
           <br />
           <TextField
@@ -56,7 +65,7 @@ class SignupForm extends Component {
             name="username"
             value={this.props.user.username || ""}
             onChange={this.props.handleChange}
-            // required
+            required
           />
           <br />
           <TextField
@@ -69,13 +78,14 @@ class SignupForm extends Component {
             name="password"
             value={this.props.user.password || ""}
             onChange={this.props.handleChange}
-            // required
+            required
           />
           <br />
-
-          <Button variant="contained" color="primary" fullWidth type="submit">
-            Signup
-          </Button>
+          <ThemeProvider theme={theme}>
+            <Button variant="contained" color="primary" fullWidth type="submit">
+              Signup
+            </Button>
+          </ThemeProvider>
         </form>
       </div>
     );

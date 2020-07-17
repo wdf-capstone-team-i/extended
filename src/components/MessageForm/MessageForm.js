@@ -37,10 +37,13 @@ function MessageForm(props) {
       >
         <ThemeProvider theme={theme}>
           <TextField
-            id="standard-basic"
+            id="standard-basic message-input"
             name="message"
             label="Message"
             value={props.message}
+            InputLabelProps={{
+              shrink: true,
+            }}
             onChange={props.onTextChange}
           />
 

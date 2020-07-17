@@ -1,10 +1,18 @@
 .App {
   text-align: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+body {
+  height: 489px;
+  width: 489px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -15,7 +23,7 @@
 
 .App-main {
   background-color: #282c34;
-  height: 489px;
+  /* height: 489px; */
   width: 489px;
   display: flex;
   flex-direction: column;
@@ -24,12 +32,13 @@
   font-size: calc(10px + 2vmin);
   color: white;
   overflow-y: scroll;
+  padding-bottom: 10em;
 }
 
 .App-link {
   color: #61dafb;
 }
 
-#standard-basic {
-  width: 270px;
+#chat {
+  height: 400px;
 }
