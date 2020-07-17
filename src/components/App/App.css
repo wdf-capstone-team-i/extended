@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .App-logo {
@@ -20,7 +23,7 @@ body {
 
 .App-main {
   background-color: #282c34;
-  height: 489px;
+  /* height: 489px; */
   width: 489px;
   display: flex;
   flex-direction: column;
@@ -29,8 +32,13 @@ body {
   font-size: calc(10px + 2vmin);
   color: white;
   overflow-y: scroll;
+  padding-bottom: 5em;
 }
 
 .App-link {
   color: #61dafb;
+}
+
+#chat {
+  height: 400px;
 }

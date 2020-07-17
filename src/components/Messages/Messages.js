@@ -127,7 +127,7 @@ class Messages extends React.Component {
     console.log("This is the messages", this.state.currentMessage);
     return (
       <div id="chat">
-        <div id="chat-messages">
+        <div id="chat-messages" className="messages">
           {this.state.chat.map((data, idx) => (
             <div key={idx} className="chat-msg">
               <p>{data.text}</p>
