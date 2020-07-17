@@ -6,6 +6,8 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import LoginForm from "./components/LoginForm/LoginForm";
 
+// axios.defaults.withCredentials = true
+
 class Routes extends Component {
   constructor() {
     super();
@@ -26,6 +28,21 @@ user: {
     this.handleLogin = this.handleLogin.bind(this);
   }
 
+  async componentDidMount() {
+    try {
+      const { data } = await  axios.get(
+        'http://localhost:8080/api/users/me',
+        { withCredentials: true }
+      )
+      if (data) {
+        console.log('DATA RECIEVED FROM GET ME:', data)
+        this.setState({user: data})
+      }
+    } catch(error) {
+      console.error(error)
+    }
+  }
+
   handleSignup(event) {
     event.preventDefault();
 
@@ -43,7 +60,9 @@ user: {
         email,
         username,
         password,
-      })
+      },
+      { withCredentials: true }
+      )
       .then((res) => this.setState({ user: { id: res.data.id } }))
       .then((body) => console.log(body));
   }
@@ -55,8 +74,10 @@ user: {
     const {data} = await axios.post('http://localhost:8080/api/users/login', {
       username: username.value,
       password: password.value
-    });
-
+    },
+    { withCredentials: true }
+    );
+    console.log('DATA RECEIVED FROM POST:', data)
     this.setState({user: {
             id: data.id,
             firstname: data.firstname,
@@ -78,6 +99,7 @@ user: {
 
   render() {
     let username = this.state.user.user;
+    console.log('STATE:', this.state)
     return (
       <div>
         {this.state.user.id ? (
