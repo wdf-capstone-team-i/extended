@@ -1,0 +1,14 @@
+#chat-form {
+  align-items: baseline;
+  position: absolute;
+  justify-content: flex-start;
+  display: flex;
+  background: #222;
+  color: #fff;
+  list-style: none;
+  font-size: 1.2em;
+  padding: 10px 20px;
+  bottom: 0;
+  width: 489px;
+  left: 0;
+}

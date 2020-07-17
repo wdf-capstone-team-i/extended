@@ -16,7 +16,7 @@ class SignupForm extends Component {
             name="firstname"
             value={this.props.user.firstname || ""}
             onChange={this.props.handleChange}
-            // required
+            required
           />
           <br />
 
@@ -29,7 +29,7 @@ class SignupForm extends Component {
             name="lastname"
             value={this.props.user.lastname || ""}
             onChange={this.props.handleChange}
-            // required
+            required
           />
           <br />
 
@@ -43,7 +43,7 @@ class SignupForm extends Component {
             value={this.props.user.email || ""}
             onChange={this.props.handleChange}
             fullWidth
-            // required
+            required
           />
           <br />
           <TextField
@@ -56,7 +56,7 @@ class SignupForm extends Component {
             name="username"
             value={this.props.user.username || ""}
             onChange={this.props.handleChange}
-            // required
+            required
           />
           <br />
           <TextField
@@ -69,7 +69,7 @@ class SignupForm extends Component {
             name="password"
             value={this.props.user.password || ""}
             onChange={this.props.handleChange}
-            // required
+            required
           />
           <br />
 
