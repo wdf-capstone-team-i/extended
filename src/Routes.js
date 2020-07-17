@@ -22,6 +22,21 @@ class Routes extends Component {
     this.handleSwitch = this.handleSwitch.bind(this);
   }
 
+  async componentDidMount() {
+    try {
+      const { data } = await  axios.get(
+        'http://localhost:8080/api/users/me',
+        { withCredentials: true }
+      )
+      if (data) {
+        console.log('DATA RECIEVED FROM GET ME:', data)
+        this.setState({user: data})
+      }
+    } catch(error) {
+      console.error(error)
+    }
+  }
+
   handleSignup(event) {
     event.preventDefault();
 
@@ -39,8 +54,12 @@ class Routes extends Component {
         email,
         username,
         password,
-      })
-      .then((res) => this.setState({ user: { id: res.data.id } }));
+
+      },
+      { withCredentials: true }
+      )
+      .then((res) => this.setState({ user: { id: res.data.id } }))
+
   }
 
   async handleLogin(event) {
@@ -49,18 +68,19 @@ class Routes extends Component {
 
     const { data } = await axios.post("http://localhost:8080/api/users/login", {
       username: username.value,
-      password: password.value,
-    });
 
-    this.setState({
-      user: {
-        id: data.id,
-        firstname: data.firstname,
-        lastname: data.lastname,
-        username: data.username,
-        email: data.email,
-      },
-    });
+      password: password.value
+    },
+    { withCredentials: true }
+    );
+    this.setState({user: {
+            id: data.id,
+            firstname: data.firstname,
+            lastname: data.lastname,
+            username: data.username,
+            email: data.email
+        }})
+
   }
 
   handleChange(event) {
@@ -77,6 +97,7 @@ class Routes extends Component {
 
   render() {
     let username = this.state.user.user;
+
     return this.state.user.id ? (
       <Messages username={username} className="message-container" />
     ) : this.state.checked ? (
