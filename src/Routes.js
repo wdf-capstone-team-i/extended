@@ -6,6 +6,8 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import LoginForm from "./components/LoginForm/LoginForm";
 
+console.log('making chages for commit')
+
 // axios.defaults.withCredentials = true
 
 class Routes extends Component {
