@@ -28,7 +28,6 @@ function getUrl(tab) {
   this.setState({ room: domain });
   this.socket.emit("new-user", domain);
   axios.get(`${serverUrl}/api/comments/domain/${domain}`).then(({ data }) => {
-    console.log("data rceived from get:", data);
     this.setState({ chat: data });
   });
 }
@@ -70,13 +69,11 @@ class Messages extends React.Component {
       axios
         .get(`${serverUrl}/api/comments/domain/${domain}`)
         .then(({ data }) => {
-          console.log("data rceived from get:", data);
           if (typeof data === "object") this.setState({ chat: data });
         });
     }
 
     this.socket.on("msg:receive", ({ message, user }, idx) => {
-      console.log(`receiving message: message: ${message} user: ${user}`);
       this.setState({
         ...this.state,
         chat: [...this.state.chat, { text: message }],
@@ -85,7 +82,6 @@ class Messages extends React.Component {
   }
 
   onTextChange(e) {
-    console.log("onTextChange");
     this.setState({
       ...this.state,
       currentMessage: {
@@ -112,7 +108,6 @@ class Messages extends React.Component {
       .then(({ data }) => {
         if (data) {
           socket.emit("msg:send", this.state.room, { message: data.text });
-          console.log(`comment: ${data.text} `);
         }
       });
 
@@ -123,8 +118,6 @@ class Messages extends React.Component {
   }
 
   render() {
-    console.log("STATE:", this.state);
-    console.log("This is the messages", this.state.currentMessage);
     return (
       <div id="chat">
         <div id="chat-messages" className="messages">

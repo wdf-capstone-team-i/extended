@@ -1,6 +1,15 @@
 import React, { Component } from "react";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { TextField, Button } from "@material-ui/core";
+import yellow from "@material-ui/core/colors/yellow";
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: yellow[500],
+    },
+  },
+});
 class SignupForm extends Component {
   render() {
     return (
@@ -72,10 +81,11 @@ class SignupForm extends Component {
             required
           />
           <br />
-
-          <Button variant="contained" color="primary" fullWidth type="submit">
-            Signup
-          </Button>
+          <ThemeProvider theme={theme}>
+            <Button variant="contained" color="primary" fullWidth type="submit">
+              Signup
+            </Button>
+          </ThemeProvider>
         </form>
       </div>
     );

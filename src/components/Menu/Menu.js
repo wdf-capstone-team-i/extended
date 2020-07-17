@@ -30,8 +30,7 @@ function SimpleMenu() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Username</MenuItem>
-        <MenuItem onClick={handleClose}># of User</MenuItem>
+        <MenuItem onClick={handleClose}>Logout</MenuItem>
         <MenuItem onClick={handleClose}>Settings</MenuItem>
       </Menu>
     </div>

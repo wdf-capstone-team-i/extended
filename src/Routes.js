@@ -1,10 +1,6 @@
 import React, { Component } from "react";
-import { Messages, Signup } from "./components";
+import { Messages, Signup, LoginForm, LoginSwitch } from "./components";
 import axios from "axios";
-import Switch from "@material-ui/core/Switch";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import LoginForm from "./components/LoginForm/LoginForm";
 
 class Routes extends Component {
   constructor() {
@@ -17,13 +13,13 @@ class Routes extends Component {
         email: "",
         username: "",
       },
-      checked: true,
+      checked: false,
     };
 
     this.handleSignup = this.handleSignup.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleSwitch = this.handleSwitch.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
+    this.handleSwitch = this.handleSwitch.bind(this);
   }
 
   handleSignup(event) {
@@ -44,8 +40,7 @@ class Routes extends Component {
         username,
         password,
       })
-      .then((res) => this.setState({ user: { id: res.data.id } }))
-      .then((body) => console.log(body));
+      .then((res) => this.setState({ user: { id: res.data.id } }));
   }
 
   async handleLogin(event) {
@@ -73,9 +68,11 @@ class Routes extends Component {
       user: { ...this.state.user, [event.target.name]: event.target.value },
     });
   }
-
   handleSwitch = (event) => {
-    this.setState({ ...this.state, checked: !this.state.checked });
+    this.setState({
+      ...this.state,
+      checked: !this.state.checked,
+    });
   };
 
   render() {
@@ -89,42 +86,18 @@ class Routes extends Component {
           handleSignup={this.handleSignup}
           handleChange={this.handleChange}
         />
-        <Typography component="div">
-          <Grid component="label" container alignItems="center" spacing={1}>
-            <Grid item>Login</Grid>
-            <Grid item>
-              <Switch
-                id="formswitch"
-                color="default"
-                name="checkedA"
-                inputProps={{ "aria-label": "secondary checkbox" }}
-                checked={this.state.checked}
-                onChange={this.handleSwitch}
-              />
-            </Grid>
-            <Grid item>Signup</Grid>
-          </Grid>
-        </Typography>
+        <LoginSwitch
+          checked={this.state.checked}
+          handleSwitch={this.handleSwitch}
+        />
       </div>
     ) : (
       <div>
         <LoginForm handleLogin={this.handleLogin} />
-        <Typography component="div">
-          <Grid component="label" container alignItems="center" spacing={1}>
-            <Grid item>Login</Grid>
-            <Grid item>
-              <Switch
-                id="formswitch"
-                color="default"
-                name="checkedA"
-                inputProps={{ "aria-label": "secondary checkbox" }}
-                checked={this.state.checked}
-                onChange={this.handleSwitch}
-              />
-            </Grid>
-            <Grid item>Signup</Grid>
-          </Grid>
-        </Typography>
+        <LoginSwitch
+          checked={this.state.checked}
+          handleSwitch={this.handleSwitch}
+        />
       </div>
     );
   }

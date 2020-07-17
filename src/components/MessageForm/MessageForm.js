@@ -14,10 +14,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexWrap: "wrap",
   },
-
-  // MuiInputBase-input: {
-  //   width: "420px";
-  // }
 }));
 
 const theme = createMuiTheme({
