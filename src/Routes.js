@@ -1,30 +1,25 @@
 import React, { Component } from "react";
-import { Messages, Signup } from "./components";
+import { Messages, Signup, LoginForm, LoginSwitch } from "./components";
 import axios from "axios";
-import Switch from "@material-ui/core/Switch";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import LoginForm from "./components/LoginForm/LoginForm";
-// axios.defaults.withCredentials = true
 
 class Routes extends Component {
   constructor() {
     super();
     this.state = {
-user: {
+      user: {
         id: null,
         firstname: "",
         lastname: "",
         email: "",
         username: "",
       },
-      checked: true,
+      checked: false,
     };
 
     this.handleSignup = this.handleSignup.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleSwitch = this.handleSwitch.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
+    this.handleSwitch = this.handleSwitch.bind(this);
   }
 
   async componentDidMount() {
@@ -59,24 +54,25 @@ user: {
         email,
         username,
         password,
+
       },
       { withCredentials: true }
       )
       .then((res) => this.setState({ user: { id: res.data.id } }))
-      .then((body) => console.log(body));
+
   }
 
   async handleLogin(event) {
     event.preventDefault();
-    const {username, password} = event.target;
+    const { username, password } = event.target;
 
-    const {data} = await axios.post('http://localhost:8080/api/users/login', {
+    const { data } = await axios.post("http://localhost:8080/api/users/login", {
       username: username.value,
+
       password: password.value
     },
     { withCredentials: true }
     );
-    console.log('DATA RECEIVED FROM POST:', data)
     this.setState({user: {
             id: data.id,
             firstname: data.firstname,
@@ -84,70 +80,45 @@ user: {
             username: data.username,
             email: data.email
         }})
+
   }
 
-    handleChange(event) {
+  handleChange(event) {
     this.setState({
       user: { ...this.state.user, [event.target.name]: event.target.value },
     });
   }
-
   handleSwitch = (event) => {
-    this.setState({ ...this.state, checked: !this.state.checked });
+    this.setState({
+      ...this.state,
+      checked: !this.state.checked,
+    });
   };
 
   render() {
     let username = this.state.user.user;
-    console.log('STATE:', this.state)
-    return (
+
+    return this.state.user.id ? (
+      <Messages username={username} className="message-container" />
+    ) : this.state.checked ? (
       <div>
-        {this.state.user.id ? (
-          <Messages username={username} />
-        ) : this.state.checked ? (
-          <div>
-            <Signup
-              {...this.state}
-              handleSignup={this.handleSignup}
-              handleChange={this.handleChange}
-            />
-            <Typography component="div">
-              <Grid component="label" container alignItems="center" spacing={1}>
-                <Grid item>Login</Grid>
-                <Grid item>
-                  <Switch
-                    id="formswitch"
-                    color="default"
-                    name="checkedA"
-                    inputProps={{ "aria-label": "secondary checkbox" }}
-                    checked={this.state.checked}
-                    onChange={this.handleSwitch}
-                  />
-                </Grid>
-                <Grid item>Signup</Grid>
-              </Grid>
-            </Typography>
-          </div>
-        ) : (
-          <div>
-            <LoginForm handleLogin={this.handleLogin} />
-            <Typography component="div">
-              <Grid component="label" container alignItems="center" spacing={1}>
-                <Grid item>Login</Grid>
-                <Grid item>
-                  <Switch
-                    id="formswitch"
-                    color="default"
-                    name="checkedA"
-                    inputProps={{ "aria-label": "secondary checkbox" }}
-                    checked={this.state.checked}
-                    onChange={this.handleSwitch}
-                  />
-                </Grid>
-                <Grid item>Signup</Grid>
-              </Grid>
-            </Typography>
-          </div>
-        )}
+        <Signup
+          {...this.state}
+          handleSignup={this.handleSignup}
+          handleChange={this.handleChange}
+        />
+        <LoginSwitch
+          checked={this.state.checked}
+          handleSwitch={this.handleSwitch}
+        />
+      </div>
+    ) : (
+      <div>
+        <LoginForm handleLogin={this.handleLogin} />
+        <LoginSwitch
+          checked={this.state.checked}
+          handleSwitch={this.handleSwitch}
+        />
       </div>
     );
   }
