@@ -9,7 +9,8 @@ import "./Messages.css";
 //     ? "http://localhost:8080"
 //     : "https://extended-chat.herokuapp.com";
 
-const serverUrl = "http://localhost:8080";
+//const serverUrl = "http://localhost:8080";
+const serverUrl = "https://extended-chat.herokuapp.com";
 
 function getUrl(tab) {
   const url = tab.url;
