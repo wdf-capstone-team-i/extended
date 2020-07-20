@@ -11,6 +11,10 @@ export const socket = io.connect(serverUrl)
 //     ? "http://localhost:8080"
 //     : "https://extended-chat.herokuapp.com";
 
+
+//const serverUrl = "http://localhost:8080";
+const serverUrl = "https://extended-chat.herokuapp.com";
+
 function getUrl(tab) {
   const url = tab.url;
   const domain = new URL(url).hostname;
