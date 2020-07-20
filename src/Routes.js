@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import { Messages, Signup, LoginForm, LoginSwitch } from "./components";
 import axios from "axios";
+import { makeStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress'
+import serverUrl from "./serverUrl";
 
 class Routes extends Component {
   constructor() {
     super();
     this.state = {
+      loading: true,
       user: {
         id: null,
         firstname: "",
@@ -25,15 +29,17 @@ class Routes extends Component {
   async componentDidMount() {
     try {
       const { data } = await  axios.get(
-        'http://localhost:8080/api/users/me',
+        `${serverUrl}/api/users/me`,
         { withCredentials: true }
       )
       if (data) {
-        console.log('DATA RECIEVED FROM GET ME:', data)
+        // console.log('DATA RECIEVED FROM GET ME:', data)
         this.setState({user: data})
       }
     } catch(error) {
       console.error(error)
+    } finally {
+      this.setState({loading: false})
     }
   }
 
@@ -48,7 +54,7 @@ class Routes extends Component {
     let password = event.target.password.value;
 
     axios
-      .post("http://localhost:8080/api/users", {
+      .post(`${serverUrl}/api/users`, {
         firstname,
         lastname,
         email,
@@ -66,7 +72,7 @@ class Routes extends Component {
     event.preventDefault();
     const { username, password } = event.target;
 
-    const { data } = await axios.post("http://localhost:8080/api/users/login", {
+    const { data } = await axios.post(`${serverUrl}/api/users/login`, {
       username: username.value,
 
       password: password.value
@@ -97,7 +103,7 @@ class Routes extends Component {
 
   render() {
     let username = this.state.user.user;
-
+    if (this.state.loading) return <CircularProgress color='white' />
     return this.state.user.id ? (
       <Messages username={username} className="message-container" />
     ) : this.state.checked ? (
