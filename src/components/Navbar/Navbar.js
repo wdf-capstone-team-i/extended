@@ -10,6 +10,18 @@ import Typography from "@material-ui/core/Typography";
 import yellow from "@material-ui/core/colors/yellow";
 import SimpleMenu from "../Menu/Menu";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import io from "socket.io-client";
+import serverUrl from "../../serverUrl"
+console.log('SERVER URL:', serverUrl)
+const socket = io.connect(serverUrl);
+
+socket.on("clients-length", (n) => {
+  console.log('NUMBER OF CLIENTS IN ROOM:', n)
+})
+
+socket.on("msg:receive", ({ message, user }, idx) => {
+  console.log('MSG:RECIEVE:', message, user)
+});
 
 const useStyles = makeStyles((theme) => ({
   root: {
