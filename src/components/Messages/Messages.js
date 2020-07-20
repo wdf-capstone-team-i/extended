@@ -3,13 +3,13 @@ import { MessageForm } from "../index";
 import io from "socket.io-client";
 import axios from "axios";
 import "./Messages.css";
+import serverUrl from "../../serverUrl";
+export const socket = io.connect(serverUrl)
 
 // const serverUrl =
 //   process.env.NODE_ENV === "development"
 //     ? "http://localhost:8080"
 //     : "https://extended-chat.herokuapp.com";
-
-const serverUrl = "http://localhost:8080";
 
 function getUrl(tab) {
   const url = tab.url;
@@ -22,12 +22,11 @@ function getUrl(tab) {
     domain,
     url,
     pageTitle: tab.title,
-
     name,
   });
   this.setState({ room: domain });
   this.socket.emit("new-user", domain);
-  axios.get(`${serverUrl}/api/comments/domain/${domain}`).then(({ data }) => {
+  axios.get(`${serverUrl}/api/comments/domain/${domain}`, {withCredentials: true}).then(({ data }) => {
     this.setState({ chat: data });
   });
 }
@@ -35,7 +34,7 @@ function getUrl(tab) {
 class Messages extends React.Component {
   constructor() {
     super();
-    this.socket = io.connect(serverUrl);
+    this.socket = socket;
 
     this.state = {
       chat: [],
@@ -67,7 +66,7 @@ class Messages extends React.Component {
       this.setState({ room: domain });
       this.socket.emit("new-user", domain);
       axios
-        .get(`${serverUrl}/api/comments/domain/${domain}`)
+        .get(`${serverUrl}/api/comments/domain/${domain}`, {withCredentials: true})
         .then(({ data }) => {
           if (typeof data === "object") this.setState({ chat: data });
         });
@@ -76,7 +75,7 @@ class Messages extends React.Component {
     this.socket.on("msg:receive", ({ message, user }, idx) => {
       this.setState({
         ...this.state,
-        chat: [...this.state.chat, { text: message }],
+        chat: [...this.state.chat, { text: message, user: user}],
       });
     });
   }
@@ -104,10 +103,12 @@ class Messages extends React.Component {
         name: this.state.name,
         text: message,
         pageTitle: this.state.pageTitle,
-      })
+      },
+      {withCredentials: true}
+      )
       .then(({ data }) => {
         if (data) {
-          socket.emit("msg:send", this.state.room, { message: data.text });
+          socket.emit("msg:send", this.state.room, { message: data.text, user: data.user });
         }
       });
 
@@ -123,7 +124,7 @@ class Messages extends React.Component {
         <div id="chat-messages" className="messages">
           {this.state.chat.map((data, idx) => (
             <div key={idx} className="chat-msg">
-              <p>{data.text}</p>
+              <p>{data.user.username + ': ' + data.text}</p>
             </div>
           ))}
           <MessageForm
