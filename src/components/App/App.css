@@ -33,6 +33,7 @@ body {
   color: white;
   overflow-y: scroll;
   padding-bottom: 10em;
+  height: 340px;
 }
 
 .App-link {
